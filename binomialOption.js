@@ -21,29 +21,11 @@ function value(S, K, T, sigma, r, q, OptionType, n = DEPTH) {
     let sqdt = Math.sqrt(deltaT);
     console.log("Sig sqdt: " + sigma*sqdt + "sigma" + sigma + "sqdt: " + sqdt);
 
-    // try {
-    //     // Check if u is NaN and handle the error
-    //     if (isNaN(sqdt)) {
-    //         throw new Error("sqdt is NaN");
-    //     }
-    // } catch (error) {
-    //     console.error(error.message);
-    //     sqdt = 0.1; // Set u to 1 if it is NaN
-    // }
-    //let u = Math.pow(E,sigma*Math.sqrt(deltaT));
+
     let u = Math.pow(E,sigma*sqdt);
 
 
-    // try {
-    //     // Check if u is NaN and handle the error
-    //     if (isNaN(u)) {
-    //         throw new Error("u is NaN");
-    //     }
-    // } catch (error) {
-    //     console.error(error.message);
-    //     u = 0.9; // Set u to 1 if it is NaN
-    // }
-        
+
     let p = (Math.pow(E,(r-q)*deltaT) - (1/u)) / (u-(1/u));
     console.log("deltaV: " + deltaT + " DV: " + dv + "  u: " + u + "    p: " + p);
 
@@ -123,63 +105,21 @@ function getValues() {
     };
 
 
-    
-    // console.log(values);
-    
-    // // Do something with the values, e.g., sum them
-    // //const sum = values.reduce((acc, val) => acc + val, 0);
-    // //console.log("Sum:", sum);
-
-    // let optPrice = value(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-    // document.getElementById('outputPrice').innerText = "Price: " + optPrice;
-    // let vegaT = vega(S = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-    // console.log(vegaT);
-    // document.getElementById('vegaT').innerText = "Vega: " + vegaT;
-
 }
 
 
 function onGetClick() {
     let inputs = getValues();
 
-    
-    // tester1();
-    // tester2();
+
     greekTable(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
-    //greekTable(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
-    //greekTable(S = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = "P");
-    
-    //graphST(S = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = "P");
+
     graphST(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
-    //graphST(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
 }
 
 
 function greekTable(S, K, T, sigma, r, q, OptionType) {
 
-    // let table = document.getElementById('outputTable');
-
-    // let row = table.insertRow();
-    // let indexCell = row.insertCell(0);
-    // let priceCell = row.insertCell(1);
-    // let IVCell = row.insertCell(2);
-    // let deltaCell = row.insertCell(3);
-    // let gammaCell = row.insertCell(4);
-    // let vegaCell = row.insertCell(5);
-    // let thetaCell = row.insertCell(6);
-    // let rhoCell = row.insertCell(7);
-    // let tCell = row.insertCell(8);
-    // //let rhoCell = row.insertCell(7); Date?
-
-    // indexCell.textContent = OptionType;
-    // priceCell.textContent = value(S, K, T, Number(sigma), r, q, OptionType); // Adjust formatting as needed
-    // IVCell.textContent = sigma; // Adjust formatting as needed
-    // deltaCell.textContent = genGreek();
-    // gammaCell.textContent = genGreek();
-    // vegaCell.textContent = genGreek();
-    // thetaCell.textContent = genGreek();
-    // rhoCell.textContent = genGreek();
-    // tCell.textContent = T;
 
     document.getElementById('cValue').innerText = value(S, K, T, Number(sigma), r, q, "C").toFixed(3);
     document.getElementById('cIV').innerText = sigma.toFixed(3);
@@ -198,67 +138,9 @@ function greekTable(S, K, T, sigma, r, q, OptionType) {
     document.getElementById('pTheta').innerText = theta(S, K, T, Number(sigma), r, q, "P").toFixed(3);
     document.getElementById('pRho').innerText = rho(S, K, T, Number(sigma), r, q, "P").toFixed(3);
     document.getElementById('pT').innerText = T.toFixed(3);
-    // let price = value(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
 
-    // let delta = delta(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-    // let gamma = gamma(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-
-    // let vegaT = vega(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-    // let thetaT = theta(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
-    // let rhoT = rho(s = stockPrice, K = strikePrice, T = optT, sigma = optionIV, r = rate, q = q, OptionType = OptionType);
     }
 
-
-
-// function tester1() {
-
-//     let TESTER = document.getElementById('tester');
-    
-    
-//     Plotly.plot( TESTER, [{
-//         x: [1, 2, 3, 4, 5],
-//         y: [1, 2, 4, 8, 16] }], { 
-//         margin: { t: 0 } }, {showSendToCloud:true} );
-    
-//     /* Current Plotly.js version */
-//     console.log( Plotly.BUILD );
-    
-// }
-
-
-// function tester2() {
-
-//     const xArray = ["Italy", "France", "Spain", "USA", "Argentina"];
-//     const yArray = [55, 49, 44, 24, 15];
-    
-//     const layout = {title:"World Wide Wine Production"};
-    
-//     const data = [{labels:xArray, values:yArray, type:"pie"}];
-    
-//     Plotly.newPlot("myPlot", data, layout);
-// }
-
-
-// function genGreek() {
-//     return Math.random();
-// }
-
-// // Calculate button event listener
-// document.getElementById('calculate-button').addEventListener('click', function() {
-//     getValues()
-// });
-
-
-
-
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     // Example 2D array data
-// }
 
 function graphST(S, K, T, sigma, r, q, OptionType = "P") {
     let n = 15;
@@ -286,9 +168,7 @@ function graphST(S, K, T, sigma, r, q, OptionType = "P") {
         zRow = [];
     }
 
-    // Prepare the x and y coordinates
-    //let xData = Array.from({length: zData[0].length}, (v, k) => k); // T
-    //let yData = Array.from({length: zData.length}, (v, k) => k); // S
+
     let xData = Tlist; // T    
     let yData = Slist; // S
 
@@ -320,33 +200,11 @@ function graphST(S, K, T, sigma, r, q, OptionType = "P") {
             remove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
         }
     };
-    console.log("Graph Done");
 
     Plotly.newPlot('graph', data, layout, {displayModeBar: false});
 }
 
 
-
-
-
-
-
-//clog(value(S = 554.64, K = 550, T = 0.1506849315068493 , sigma = 0.11652082033824894 , r = 0.05, q = 0, OptionType = "P", arr = false))
-
-
-// //Delta EB
-// def delta(S,K,T,sigma,r,q, OptionType):
-//     prices,fArr = value(S, K, T, sigma, r, q, OptionType, True)
-//     delta = (fArr[2] - fArr[0]) / (prices[2] - prices[0])
-//     return delta
-
-// //Gamma EB
-// def gamma(S,K,T,sigma,r,q, OptionType):
-//     prices,fArr = value(S, K, T, sigma, r, q, OptionType, True)
-//     delta1 = (fArr[2] - fArr[1]) / (prices[2] - prices[1])
-//     delta2 = (fArr[1] - fArr[0]) / (prices[1] - prices[0])
-//     gamma = (delta1 - delta2) / (prices[2] - prices[0])
-//     return gamma*2
 
 //DeltaFD
 function delta(S,K,T, sigma,r,q,OptionType) {
@@ -359,14 +217,6 @@ function delta(S,K,T, sigma,r,q,OptionType) {
     let deltaFD = (pSU - pSD) / (2 * stol);
     return deltaFD;
 }
-
-// //Vega FD
-// def vega(S,K,T,sigma,r,q, OptionType):
-//     sigtol = sigma * TOL
-//     pVU = value(S, K, T, sigma + sigtol, r, q, OptionType, False)
-//     pVD = value(S, K, T, sigma - sigtol, r, q, OptionType, False)
-//     vega = (pVU - pVD) / (2*sigtol*100)
-//     return vega
 
 //Vega FD
 function vega(S,K,T, sigma,r,q,OptionType) {
@@ -383,14 +233,6 @@ function vega(S,K,T, sigma,r,q,OptionType) {
 }
     
 
-// //Theta FD
-// def theta(S,K,T,sigma,r,q, OptionType):
-
-//     thetatol = T * TOL
-//     pTU = value(S, K, T + thetatol, sigma, r, q, OptionType, False)
-//     pTD = value(S, K, T - thetatol, sigma, r, q, OptionType, False)
-//     theta = - (pTU - pTD) / (2*thetatol*365)
-//     return theta
 
 function theta(S,K,T, sigma,r,q,OptionType) {
     var thetatol = T * TOL;
@@ -407,14 +249,6 @@ function theta(S,K,T, sigma,r,q,OptionType) {
 
 
 
-// //Rho FD
-// def rho(S,K,T,sigma,r,q, OptionType):
-//     rtol = r * TOL
-//     pRU = value(S, K, T, sigma, r + rtol, q, OptionType, False)
-//     pRD = value(S, K, T, sigma, r - rtol, q, OptionType, False)
-//     rho = (pRU - pRD) / (2*rtol*100)
-//     return rho
-
 function rho(S,K,T, sigma,r,q,OptionType) {
     var rtol = r * TOL;
     //console.log("Vega ");
@@ -428,24 +262,5 @@ function rho(S,K,T, sigma,r,q,OptionType) {
     return rhoFD;
 }
 
-
-// def greeks(S,K,T,sigma,r,q, OptionType):
-
-//     d = delta(S,K,T,sigma,r,q, OptionType)
-//     g = gamma(S,K,T,sigma,r,q, OptionType)
-//     #sigma
-//     v = vega(S,K,T,sigma,r,q, OptionType)
-//     t = theta(S,K,T,sigma,r,q, OptionType)
-//     rs = rho(S,K,T,sigma,r,q, OptionType)
-//     #print([delta, gamma, sigma, vega, theta, rho])
-//     return [d, g, sigma, v, t, rs]
-
-
-
-// def printOpt(S,K,T,sigma,r,q, OptionType):
-//     greekList = greeks(S,K,T,sigma,r,q, OptionType)
-//     v = value(S, K, T, sigma, r, q, OptionType, False)
-//     print("{} | Value: {:.3}, Delta: {:.3}, Gamma: {:.3}, IV: {:.3}, Vega: {:.3}, Theta: {:.3}, Rho: {:.3} | |".format(
-//         OptionType, v, greekList[0], greekList[1], greekList[2], greekList[3], greekList[4], greekList[5]))
 
 
