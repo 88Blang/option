@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="binomialOption.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<html>
+
+<body>
+
+
+    <div class="header">
+        <h1>Options</h1>
+        <a href="about.html"><h3>Formulas</h3></a>
+        <!-- <a href="about.html"><h3>About</h3></a>
+        <h3>Reports</h3>
+        <h3>News</h3>
+        <h3>Books</h3>
+        <h3>Resources</h3> -->
+    </div>
+    <div class="content">
+        <table>
+
+            <tr>
+                <td>
+                    <p class="input-name">Stock Price:</p>
+                    <!-- <label for="input1">Stock Price:</label> -->
+                    <p class="input-name">Strike Price:</p>
+                    <p class="input-name">Implied Volatility:</p>
+                    <p class="input-name">Interest Rate:</p>
+                    <p class="input-name">Expiry Date:</p>
+                </td>
+                <td>
+                    <h1>Inputs</h1>
+    <div id="input-container">
+        <div class="input-group">
+            <!-- <label for="input1">Stock Price:</label> -->
+            <input class="input-box" type="number" id="input1" value = "555.28" placeholder="0">
+        </div>
+        <div class="input-group">
+            <!-- <label for="input2">Strike:</label> -->
+            <input class="input-box" type="number" id="input2" value = "550" placeholder="0">
+        </div>
+        <div class="input-group">
+            <!-- <label for="input3">IV:</label> -->
+            <input class="input-box" type="number" id="input3" value = "0.3" placeholder="0">
+        </div>
+        <!-- <div class="input-group">
+            <label for="input4">Date:</label>
+            <input class="input-box" type="date" id="input4" value = "0.14520547945205478" placeholder="0">
+        </div> -->
+        <div class="input-group">
+            <!-- <label for="input5">Rate:</label> -->
+            <input class="input-box" type="number" id="input5" value = "0.05" placeholder="0">
+        </div>
+        <div>
+            <form>
+                <label>
+                  <!-- Expiry date: -->
+                  <input class="input-box" type="date" id="input4" name="date" value="2024-08-16" min="2024-01-01" max="2026-01-01" />
+                </label>
+              </form>
+        </div>
+        <button onclick="onGetClick()">Get Values</button>
+        </td>
+        <td class="middle">
+            <h5>Graph</h5>
+            <div id="graph" style="width:90%;height:500px;"></div>
+
+            <p></p>
+        </td>
+            <td>
+                <!-- <h5>Right</h5> -->
+            </td>
+            
+            </tr>
+        </table>
+    </div>
+
+    
+        <!-- <div><p id="outputPrice"></p></div>
+        <div><p id="optT"></p></div>
+        <div><p id="vegaT"></p></div> -->
+    </div>
+    
+    
+    <table id="outputTable">
+        <tr>
+            <th>Option</th>
+            <th>Value</th>
+            <th>IV</th>
+            <th>Delta</th>
+            <th>Gamma</th>
+            <th>Vega</th>
+            <th>Theta</th>
+            <th>Rho</th>
+            <th>T</th>
+            <!-- <th>Date</th> -->
+        </tr>
+        <tr>
+            <td>C</td>
+            <td id="cValue">0</td>
+            <td id="cIV">0</td>
+            <td id="cDelta">0</td>
+            <td id="cGamma">0</td>
+            <td id="cVega">0</td>
+            <td id="cTheta">0</td>
+            <td id="cRho">0</td>
+            <td id="cT">0</td>
+            <!-- <th>Date</th> -->
+        </tr>
+        <tr>
+            <td>P</td>
+            <td id="pValue">0</td>
+            <td id="pIV">0</td>
+            <td id="pDelta">0</td>
+            <td id="pGamma">0</td>
+            <td id="pVega">0</td>
+            <td id="pTheta">0</td>
+            <td id="pRho">0</td>
+            <td id="pT">0</td>
+            <!-- <th>Date</th> -->
+        </tr>
+    </table>
+    
+    <!-- <div id="tester" style="width:90%;height:250px;"></div>
+    
+    <div id="myPlot" style="width:90%;height:500px;"></div>
+ -->
+
+</body>
+</html>
