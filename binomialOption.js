@@ -7,7 +7,7 @@ const DEPTH = 500;
 const TOL = 0.001;
 
 // window.onload = onGetClick;
-setTimeout(onGetClick, 1000);
+// setTimeout(onGetClick, 1000);
 
 function value(S, K, T, sigma, r, q, OptionType, n = DEPTH) {
     let deltaT = T/n;
@@ -236,3 +236,4 @@ function rho(S,K,T, sigma,r,q,OptionType) {
     return rhoFD;
 }
 
+setTimeout(onGetClick, 1000);
