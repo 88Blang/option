@@ -6,6 +6,7 @@ const E = Math.E;
 const DEPTH = 500;
 const TOL = 0.001;
 
+window.onload = onGetClick;
 
 function value(S, K, T, sigma, r, q, OptionType, n = DEPTH) {
     let deltaT = T/n;
