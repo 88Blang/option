@@ -2,28 +2,17 @@
 
 
 
-
-
-
-
-//import math
 const E = Math.E;
-
-const DEPTH = 500; //500
-const TOL = 0.001; // 0.001
+const DEPTH = 500;
+const TOL = 0.001;
 
 
 function value(S, K, T, sigma, r, q, OptionType, n = DEPTH) {
     let deltaT = T/n;
     let dv = Math.pow(E, -r*deltaT);
-
-
     let sqdt = Math.sqrt(deltaT);
     console.log("Sig sqdt: " + sigma*sqdt + "sigma" + sigma + "sqdt: " + sqdt);
-
-
     let u = Math.pow(E,sigma*sqdt);
-
 
 
     let p = (Math.pow(E,(r-q)*deltaT) - (1/u)) / (u-(1/u));
@@ -36,129 +25,119 @@ function value(S, K, T, sigma, r, q, OptionType, n = DEPTH) {
     let Snp = arange1.map((val, index) => S * Math.pow(u, val) * Math.pow(u, -arange2[index]));
     console.log("Snp: " + Snp)
     
-    if (OptionType == "C") {
+    if (OptionType == "Call") {
         Fnp = Snp.map(S => Math.max(0, S - K));
     } else {
         Fnp = Snp.map(S => Math.max(0, K - S));
     }
 
     for (let i = n; i >= 0; i--) {
-
         Snp = Snp.map(value => value * u);
-
         for (let j = 0; j < i; j++) {
-            if (OptionType == "C") {
+            if (OptionType == "Call") {
                 Fnp[j] = Math.max(dv * ( (p * Fnp[j + 1]) + ((1 - p) * Fnp[j]) ), (Snp[j] - K) );
-                // F[i] max(discount const * (prob const * prev FUp + (1-prod const) * prev FDwon) , S(u,i) - K  const )
-
             } else {
                 Fnp[j] = Math.max(dv * ( (p * Fnp[j + 1]) + ((1 - p) * Fnp[j]) ), (K - Snp[j]) );
             }
         
         }
-        //console.log("Return Prics " + Fnp.slice(0,5) + "i: " + i);
     }
-    //clog("Return Price:",Fnp[0]);
-    //console.log("Return Prics " + Fnp.slice(0,5));
-    //console.log("Return Price " + Fnp[0]);
+
     return Fnp[0];
 }
 
 
 
-function clog(value) {console.log(value)};
-
 function getValues() {
     // Get the values from the input boxes
-    let stockPrice = document.getElementById('input1').value;
-    let strikePrice = document.getElementById('input2').value;
-    let optionIV = document.getElementById('input3').value;
-    let rate = document.getElementById('input5').value;
-    // Add Inputs
-    let q = 0;
-    let OptionType = "P";
+    let stockPrice = document.getElementById('stockPrice').value;
+    let strikePrice = document.getElementById('strikePrice').value;
+    let optionIV = document.getElementById('impVol').value;
+    let rate = document.getElementById('rate').value;
+    let q = document.getElementById('dividend').value;
+    let OptionType = document.getElementById('optType').value;
 
-    let date = new Date(document.getElementById('input4').value); //Get Date
+    // Convert to T
+    let date = new Date(document.getElementById('expiry').value); //Get Date
     date.setHours(0); date.setMinutes(0); date.setSeconds(0); date.setDate(date.getDate()+1);
     let d = new Date(); //Set todays
     d.setHours(0); d.setMinutes(0); d.setSeconds(0);
     let optT = (date-d)/ (1000*60*60*24) / 365;
 
-
-
-    //const d = new Date();
-    clog(d);
-    clog(date);
-
-
-
     // Convert values to numbers
     return values = {
         "stockPrice": Number(stockPrice),
         "strikePrice": Number(strikePrice),
-        "optionIV": Number(optionIV),
-        "date": Date(date),
+        "impVol": Number(optionIV),
         "rate": Number(rate),
-        "q": Number(q),
-        "OptionType": String(OptionType),
-        "T": Number(optT)
+        "dividend": Number(q),
+        "T": Number(optT),
+        "optType": String(OptionType)
     };
-
-
 }
+
+// FORMAT
+// {
+//     "stockPrice": 100,
+//     "strikePrice": 100,
+//     "impVol": 0.5,
+//     "rate": 0.05, //Annual
+//     "dividend": 0, 
+//     "T": 1, // NOT EXPIRY
+//     "optType": "Call", //{ "Call", "Put" }
+// }
 
 
 function onGetClick() {
     let inputs = getValues();
+    // let data = inputs;
+    // // let fetchPort = fetch('http://localhost:3000/binomialTree');
+    // const responseCell = document.getElementById('responseCell');
 
+    
+    // fetch('http://localhost:3000/binomialTree', {
+    //     method: 'POST',
+    //     headers: {
+    //         "content-type": "application/json"
+    //     },
+    //     body: JSON.stringify(data)
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     // Update the table cell with the response data
+    //     responseCell.innerText = data.value;
+    // })
+    // .catch(error => {
+    //     console.error('Error:', error);
+    //     responseCell.innerText = 'An error occurred';
+    // });
 
-    greekTable(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
+    greekTable(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.impVol, r = inputs.rate, q = inputs.dividend, OptionType = inputs.optType);
+    graphST(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.impVol, r = inputs.rate, q = inputs.dividend, OptionType = inputs.optType);
 
-    graphST(S = inputs.stockPrice, K = inputs.strikePrice, T = inputs.T, sigma = inputs.optionIV, r = inputs.rate, q = inputs.q, OptionType = inputs.OptionType);
 }
 
 
 function greekTable(S, K, T, sigma, r, q, OptionType) {
+    document.getElementById('typeOut').innerText = OptionType;
+    document.getElementById('valueOut').innerText = value(S, K, T, Number(sigma), r, q, OptionType).toFixed(3);
+    document.getElementById('deltaOut').innerText = delta(S, K, T, Number(sigma), r, q, OptionType).toFixed(3);
+    document.getElementById('gammaOut').innerText = (Math.random() / 10).toFixed(3); //Not real
+    document.getElementById('vegaOut').innerText = vega(S, K, T, Number(sigma), r, q, OptionType).toFixed(3);
+    document.getElementById('thetaOut').innerText = theta(S, K, T, Number(sigma), r, q, OptionType).toFixed(3);
+    document.getElementById('impVolOut').innerText = rho(S, K, T, Number(sigma), r, q, OptionType).toFixed(3);
+    document.getElementById('tOut').innerText = T.toFixed(3);
+}
 
 
-    document.getElementById('cValue').innerText = value(S, K, T, Number(sigma), r, q, "C").toFixed(3);
-    document.getElementById('cIV').innerText = sigma.toFixed(3);
-    document.getElementById('cDelta').innerText = delta(S, K, T, Number(sigma), r, q, "C").toFixed(3);
-    document.getElementById('cGamma').innerText = Math.random().toFixed(3); //Not real
-    document.getElementById('cVega').innerText = vega(S, K, T, Number(sigma), r, q, "C").toFixed(3);
-    document.getElementById('cTheta').innerText = theta(S, K, T, Number(sigma), r, q, "C").toFixed(3);
-    document.getElementById('cRho').innerText = rho(S, K, T, Number(sigma), r, q, "C").toFixed(3);
-    document.getElementById('cT').innerText = T.toFixed(3);
-
-    document.getElementById('pValue').innerText = value(S, K, T, Number(sigma), r, q, "P").toFixed(3);
-    document.getElementById('pIV').innerText = sigma.toFixed(3);
-    document.getElementById('pDelta').innerText = delta(S, K, T, Number(sigma), r, q, "P").toFixed(3);
-    document.getElementById('pGamma').innerText = -Math.random().toFixed(3);
-    document.getElementById('pVega').innerText = vega(S, K, T, Number(sigma), r, q, "P").toFixed(3);
-    document.getElementById('pTheta').innerText = theta(S, K, T, Number(sigma), r, q, "P").toFixed(3);
-    document.getElementById('pRho').innerText = rho(S, K, T, Number(sigma), r, q, "P").toFixed(3);
-    document.getElementById('pT').innerText = T.toFixed(3);
-
-    }
-
-
-function graphST(S, K, T, sigma, r, q, OptionType = "P") {
+function graphST(S, K, T, sigma, r, q, OptionType) {
     let n = 15;
     let ar = Array.from({length: n+1}, (v, k) => k); // [0, 1, 2, ..., n]
     // Calculate Snp
-    console.log("arr" + ar);
-    
     let Slist = ar.map((val, index) => S * Math.pow(1.01, val));
-
-    console.log("Slist: " + Slist);
-    //let Tlist = ar.map((val, index) => T * Math.pow(1.1, val));
     let Tlist = ar.map((val, index) => T - T/n*val);
-    console.log("Tlist: " + Tlist);
-
-    // let zData = [[1, 2, 3, 4],[2, 3, 4, 5],[3, 4, 5, 6],[4, 5, 6, 7]];
 
     let zData = [];
-
     let zRow = [];
     for (let i = 0; i <= n; i++) { //Slist = i
         for (let j = 0; j <= n; j++) { //Tlist = j
@@ -167,7 +146,6 @@ function graphST(S, K, T, sigma, r, q, OptionType = "P") {
         zData.push(zRow)
         zRow = [];
     }
-
 
     let xData = Tlist; // T    
     let yData = Slist; // S
@@ -178,7 +156,7 @@ function graphST(S, K, T, sigma, r, q, OptionType = "P") {
         x: xData,
         y: yData,
         type: 'surface',
-        showscale: false //heat scale for z
+        showscale: false
     }];
 
     let layout = {
@@ -194,24 +172,28 @@ function graphST(S, K, T, sigma, r, q, OptionType = "P") {
         scene: {
             xaxis: {title: 'Time'},
             yaxis: {title: 'Stock'},
-            zaxis: {title: 'Value'}
+            zaxis: {title: 'Value'},
+            camera: {
+                eye: {
+                    x: -1.5,
+                    y: -2,
+                    z: 0.8
+                }
+            }
         },
-        modebar: { // Hide the mode bar
+        modebar: {
             remove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
         }
     };
-
+    console.log("Graph Done");
     Plotly.newPlot('graph', data, layout, {displayModeBar: false});
 }
-
 
 
 //DeltaFD
 function delta(S,K,T, sigma,r,q,OptionType) {
     var stol = S * TOL;
-
     let pSU = value(S + stol, K, T, sigma, r, q, OptionType);
-    // let pSN = value(S, K, T, sigma + sigtol, r, q, OptionType);
     let pSD = value(S - stol, K, T, sigma, r, q, OptionType);
     console.log(stol)
     let deltaFD = (pSU - pSD) / (2 * stol);
@@ -231,36 +213,23 @@ function vega(S,K,T, sigma,r,q,OptionType) {
     console.log("VegaFD " + vegaFD);
     return vegaFD;
 }
-    
 
 
+//Theta FD
 function theta(S,K,T, sigma,r,q,OptionType) {
     var thetatol = T * TOL;
-    //console.log("Vega ");
-    //console.log("S" + S + "K" + K + "T" + T + "Sig" + sigma + "sigtol" + sigtol + "r" + r + "q" + q + "Opt" + OptionType);
     let pTU = value(S, K, T + thetatol, sigma, r, q, OptionType);
-    //console.log("VegaUp " + pVU);
     let pTD = value(S, K, T - thetatol, sigma, r, q, OptionType);
-    //console.log("VegaDown " + pVD);
     let thetaFD = -(pTU - pTD) / (2 * thetatol * 365);
-    //console.log("VegaFD " + vegaFD);
     return thetaFD;
 }
 
 
-
+//Rho FD
 function rho(S,K,T, sigma,r,q,OptionType) {
     var rtol = r * TOL;
-    //console.log("Vega ");
-    //console.log("S" + S + "K" + K + "T" + T + "Sig" + sigma + "sigtol" + sigtol + "r" + r + "q" + q + "Opt" + OptionType);
     let pRU = value(S, K, T, sigma, r + rtol, q, OptionType);
-    //console.log("VegaUp " + pVU);
     let pRD = value(S, K, T, sigma, r - rtol, q, OptionType);
-    //console.log("VegaDown " + pVD);
     let rhoFD = (pRU - pRD) / (2 * rtol * 100);
-    //console.log("VegaFD " + vegaFD);
     return rhoFD;
 }
-
-
-
