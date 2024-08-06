@@ -234,3 +234,7 @@ function rho(S,K,T, sigma,r,q,OptionType) {
     let rhoFD = (pRU - pRD) / (2 * rtol * 100);
     return rhoFD;
 }
+
+
+window.onload = onGetClick;
+
