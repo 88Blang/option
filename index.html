@@ -24,7 +24,7 @@
             <tr>
                 <th>Strike Price</th>
                 <th>
-                    <input class="input-box" type="number" id="strikePrice" value = "100" placeholder="0">
+                    <input class="input-box" type="number" id="strikePrice" value = "110" placeholder="0">
                 </th>
             </tr>
             <tr>
@@ -48,7 +48,7 @@
             <tr>
                 <th>Expiry</th>
                 <th>
-                    <input class="input-box" type="date" id="expiry" name="date" value="2025-08-03" min="2024-01-01" max="2026-01-01" />
+                    <input class="input-box" type="date" id="expiry" name="date" value="2025-01-10" min="2024-01-01" max="2026-01-01" />
                 </th>
             </tr>
             <tr>
@@ -64,7 +64,19 @@
                 </th>
             </tr>
         </table>
-        <div id="graph"></div>
+        <div id="graph-container">
+            <h2>Option Value with Varying Stock Price and Time to Expiry</h2>
+            <div id="graph"></div>
+            <div id="notes">
+                <h3>Graph Notes:</h3>
+                <ul>
+                    <li>Option value (Z) calculated at stock price (Y) and time (X)</li>
+                    <li>Option value approaches it's payoff graph at T=0 </li>
+                    <li>Change default inputs the click "Get Values" button</li>
+                    <li>Type Input: Can be "Call" or "Put"</li>
+                </ul>
+            </div>
+        </div>
         <table id="outputs">
             <tr>
                 <th>Option</th>
